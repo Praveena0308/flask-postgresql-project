@@ -44,4 +44,4 @@ def delete_user(user_id):
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()
-    app.run(host='0.0.0.0', port=5000)
+    app.run(host=['3.64.255.200','172.31.24.159'], port=5000)
