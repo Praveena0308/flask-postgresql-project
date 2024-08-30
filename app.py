@@ -2,10 +2,23 @@ from flask import Flask, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
 from models import db, User
 
+
 app = Flask(__name__)
 app.config.from_object('config.Config')
 
-db.init_app(app)
+db = SQLAlchemy(app)
+
+class User(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(50), nullable=False)
+    email = db.Column(db.String(120), unique=True, nullable=False)
+
+    def serialize(self):
+        return {
+            'id': self.id,
+            'name': self.name,
+            'email': self.email
+        }
 
 @app.route('/users', methods=['POST'])
 def add_user():
@@ -44,4 +57,4 @@ def delete_user(user_id):
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()
-    app.run(host=['3.64.255.200','172.31.24.159'], port=5000)
+    app.run(host='0.0.0.0', port=5000)
